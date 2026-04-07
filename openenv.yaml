@@ -1,0 +1,15 @@
+name: energy_grid_rl
+version: 0.1.0
+description: AI Energy Grid Balancer using Reinforcement Learning to manage battery storage and demand.
+entry_point: env:EnergyGridEnv
+dependencies:
+  - gymnasium
+  - stable-baselines3
+  - pandas
+  - matplotlib
+  - numpy
+  - gradio
+  - huggingface_hub
+  - fastapi
+  - uvicorn
+  - openai
