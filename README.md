@@ -3,8 +3,7 @@ title: AI Energy Grid Balancer
 emoji: ⚡
 colorFrom: yellow
 colorTo: green
-sdk: gradio
-sdk_version: 5.20.1
+sdk: docker
 app_file: app.py
 pinned: false
 ---
