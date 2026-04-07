@@ -78,11 +78,11 @@ def run_simulation(battery_cap, demand_mult):
     )
 
     try:
-        # Using the chat_completion method for conversational models
+        # Using a highly compatible model Llama-3.2-1B-Instruct
         response = client.chat_completion(
-            model="mistralai/Mistral-7B-Instruct-v0.2",
+            model="meta-llama/Llama-3.2-1B-Instruct",
             messages=[{"role": "user", "content": analysis_prompt}],
-            max_tokens=100
+            max_tokens=150
         )
         ai_report = response.choices[0].message.content
     except Exception as e:
