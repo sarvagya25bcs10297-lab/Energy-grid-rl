@@ -23,7 +23,7 @@ dependencies = [
 ]
 
 [project.scripts]
-server = "energy_grid_rl.app:demo.app"
+server = "app:main"
 
 [tool.setuptools]
 packages = ["energy_grid_rl"]

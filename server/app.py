@@ -122,6 +122,10 @@ async def info():
 # IMPORTANT: This must be the last step
 app = gr.mount_gradio_app(main_app, demo, path="/")
 
-if __name__ == "__main__":
+def main():
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=7860)
+    # The 'app' object is the FastAPI instance with Gradio mounted
+    uvicorn.run("app:app", host="0.0.0.0", port=7860, reload=False)
+
+if __name__ == "__main__":
+    main()
