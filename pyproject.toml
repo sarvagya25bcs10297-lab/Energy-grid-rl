@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "energy-grid-rl"
+version = "0.1.0"
+description = "AI Energy Grid Balancer using Reinforcement Learning"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "gymnasium",
+    "stable_baselines3",
+    "pandas",
+    "matplotlib",
+    "numpy",
+    "gradio",
+    "huggingface_hub",
+    "fastapi",
+    "uvicorn",
+    "openai",
+]
+
+[tool.setuptools]
+packages = ["energy_grid_rl"]
