@@ -1,0 +1,7 @@
+gymnasium
+stable-baselines3
+pandas
+matplotlib
+numpy
+gradio
+huggingface_hub
