@@ -104,5 +104,59 @@ with gr.Blocks(title="AI Energy Grid Balancer") as demo:
 
     btn.click(run_simulation, inputs=[batt_input, demand_input], outputs=[cost_out, plot_out, ai_out])
 
+# ─── OpenEnv API Endpoints ───────────────────────────────────────────
+# Required by the hackathon submission checker.
+# Gradio exposes its FastAPI app, so we mount /reset and /step on it.
+
+from fastapi import Request
+from fastapi.responses import JSONResponse
+
+fastapi_app = demo.app
+
+# Shared environment instance for OpenEnv API
+openenv_env = EnergyGridEnv()
+
+
+@fastapi_app.post("/reset")
+async def openenv_reset(request: Request):
+    try:
+        body = await request.json()
+        seed = body.get("seed", None) if body else None
+    except Exception:
+        seed = None
+    observation, info = openenv_env.reset(seed=seed)
+    return JSONResponse(content={
+        "observation": observation.tolist(),
+        "info": info
+    })
+
+
+@fastapi_app.post("/step")
+async def openenv_step(request: Request):
+    body = await request.json()
+    action = int(body.get("action", 0))
+    observation, reward, terminated, truncated, info = openenv_env.step(action)
+    return JSONResponse(content={
+        "observation": observation.tolist(),
+        "reward": float(reward),
+        "terminated": bool(terminated),
+        "truncated": bool(truncated),
+        "info": info
+    })
+
+
+@fastapi_app.get("/info")
+async def openenv_info():
+    return JSONResponse(content={
+        "action_space": {"type": "Discrete", "n": openenv_env.action_space.n},
+        "observation_space": {
+            "type": "Box",
+            "shape": list(openenv_env.observation_space.shape),
+            "low": openenv_env.observation_space.low.tolist(),
+            "high": openenv_env.observation_space.high.tolist()
+        }
+    })
+
+
 if __name__ == "__main__":
     demo.launch()
