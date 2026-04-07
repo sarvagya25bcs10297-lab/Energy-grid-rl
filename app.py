@@ -78,9 +78,13 @@ def run_simulation(battery_cap, demand_mult):
     )
 
     try:
-        # Using a powerful open model like Mistral for analysis
-        response = client.text_generation(analysis_prompt, model="mistralai/Mistral-7B-Instruct-v0.2", max_new_tokens=100)
-        ai_report = response
+        # Using the chat_completion method for conversational models
+        response = client.chat_completion(
+            model="mistralai/Mistral-7B-Instruct-v0.2",
+            messages=[{"role": "user", "content": analysis_prompt}],
+            max_tokens=100
+        )
+        ai_report = response.choices[0].message.content
     except Exception as e:
         ai_report = f"AI Analysis unavailable: {str(e)}. Total Cost: ${total_cost:.2f}"
 
