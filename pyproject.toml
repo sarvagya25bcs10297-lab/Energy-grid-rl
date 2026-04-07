@@ -19,7 +19,11 @@ dependencies = [
     "fastapi",
     "uvicorn",
     "openai",
+    "openenv-core>=0.2.0",
 ]
+
+[project.scripts]
+server = "energy_grid_rl.app:demo.app"
 
 [tool.setuptools]
 packages = ["energy_grid_rl"]
