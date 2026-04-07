@@ -1,3 +1,14 @@
+---
+title: AI Energy Grid Balancer
+emoji: ⚡
+colorFrom: yellow
+colorTo: green
+sdk: gradio
+sdk_version: 5.20.1
+app_file: app.py
+pinned: false
+---
+
 # ⚡ AI Energy Grid Balancer
 
 > A Deep Reinforcement Learning system that intelligently manages battery storage to balance renewable energy production and consumer demand — minimizing costs from the main grid in real time.
