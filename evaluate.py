@@ -8,7 +8,7 @@ from env import EnergyGridEnv
 def evaluate():
     # Initialize environment and load model
     env = EnergyGridEnv()
-    model = PPO.load("energy_grid_agent")
+    model = PPO.load("energy_grid_agent.dat")
 
     obs, _ = env.reset()
     done = False

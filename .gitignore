@@ -16,6 +16,7 @@ tensorboard/
 *.zip
 !energy_grid_model.zip
 !energy_grid_agent.zip
+!energy_grid_agent.dat
 *.png
 !evaluation_results.png
 !sim_results.png
