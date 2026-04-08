@@ -89,7 +89,7 @@ def main():
                 sys.exit(1)
 
     # ── 2. Load Model ────────────────────────────────────────────────
-    model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "energy_grid_model")
+    model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "energy_grid_agent")
     try:
         model = PPO.load(model_path)
         print(f"[INFO] Model loaded from {model_path}", file=sys.stderr)

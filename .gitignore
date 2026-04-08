@@ -15,6 +15,7 @@ venv.bak/
 tensorboard/
 *.zip
 !energy_grid_model.zip
+!energy_grid_agent.zip
 *.png
 !evaluation_results.png
 !sim_results.png

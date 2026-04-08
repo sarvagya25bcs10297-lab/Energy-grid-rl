@@ -20,9 +20,9 @@ def run_simulation(battery_cap, demand_mult):
     sim_env.battery_capacity = float(battery_cap)
     
     try:
-        model = PPO.load("energy_grid_model")
+        model = PPO.load("energy_grid_agent")
     except Exception as e:
-        return f"Error: Model loading failed ({str(e)})", None, "Ensure energy_grid_model.zip is in root."
+        return f"Error: Model loading failed ({str(e)})", None, "Ensure energy_grid_agent.zip is in root."
 
     obs, _ = sim_env.reset()
     done = False

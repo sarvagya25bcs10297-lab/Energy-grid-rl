@@ -23,9 +23,9 @@ def run_simulation(battery_cap, demand_mult):
 
     # Load the pre-trained model
     try:
-        model = PPO.load("energy_grid_model")
+        model = PPO.load("energy_grid_agent")
     except Exception as e:
-        return f"Error: Model loading failed ({str(e)}). Please ensure energy_grid_model.zip exists.", None, ""
+        return f"Error: Model loading failed ({str(e)}). Please ensure energy_grid_agent.zip exists.", None, ""
 
     obs, _ = sim_env.reset()
     done = False
