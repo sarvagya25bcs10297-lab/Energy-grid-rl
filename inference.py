@@ -1,7 +1,9 @@
 import sys
 import os
 import traceback
-import requests
+import json
+import urllib.request
+import urllib.error
 import numpy as np
 from stable_baselines3 import PPO
 
@@ -16,26 +18,29 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 # ── Remote Environment Wrapper ─────────────────────────────────────
 class RemoteEnergyGridEnv:
-    """A wrapper that communicates with the EnergyGridEnv via HTTP API."""
+    """A wrapper that communicates with the EnergyGridEnv via HTTP API using urllib."""
     def __init__(self, base_url):
         self.base_url = base_url.rstrip("/")
-        # Action space info (expected by some SB3 versions or for checks)
-        self.action_space_n = 4 
+
+    def _post(self, endpoint, data):
+        url = f"{self.base_url}/{endpoint}"
+        body = json.dumps(data).encode("utf-8")
+        req = urllib.request.Request(
+            url, data=body, headers={"Content-Type": "application/json"}, method="POST"
+        )
+        with urllib.request.urlopen(req, timeout=10) as response:
+            return json.loads(response.read().decode("utf-8"))
 
     def reset(self, seed=None):
         try:
-            resp = requests.post(f"{self.base_url}/reset", json={"seed": seed}, timeout=10)
-            resp.raise_for_status()
-            data = resp.json()
+            data = self._post("reset", {"seed": seed})
             return np.array(data["observation"], dtype=np.float32), data.get("info", {})
         except Exception as e:
             raise RuntimeError(f"Failed to reset remote environment at {self.base_url}: {e}")
 
     def step(self, action):
         try:
-            resp = requests.post(f"{self.base_url}/step", json={"action": int(action)}, timeout=10)
-            resp.raise_for_status()
-            data = resp.json()
+            data = self._post("step", {"action": int(action)})
             # Handle both 'done' (old gym) and 'terminated'/'truncated' (gymnasium)
             terminated = data.get("terminated", data.get("done", False))
             truncated = data.get("truncated", False)
@@ -60,11 +65,12 @@ def main():
     # Check if a remote environment is available/requested
     use_remote = False
     try:
-        response = requests.get(f"{ENV_API_URL}/info", timeout=2)
-        if response.status_code == 200:
-            print(f"[INFO] Using remote environment at {ENV_API_URL}", file=sys.stderr)
-            env = RemoteEnergyGridEnv(ENV_API_URL)
-            use_remote = True
+        url = f"{ENV_API_URL}/info"
+        with urllib.request.urlopen(url, timeout=2) as response:
+            if response.status == 200:
+                print(f"[INFO] Using remote environment at {ENV_API_URL}", file=sys.stderr)
+                env = RemoteEnergyGridEnv(ENV_API_URL)
+                use_remote = True
     except:
         pass
 
@@ -134,6 +140,7 @@ def main():
         print("[ERROR] Unhandled exception during episode execution:", file=sys.stderr)
         traceback.print_exc()
         sys.exit(1)
+
 
 
 
