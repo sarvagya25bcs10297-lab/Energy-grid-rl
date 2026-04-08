@@ -1,6 +1,7 @@
 import sys
 import os
 import traceback
+# v1.0.3 - Fixed dependency issues and robustified environment handling
 import json
 import urllib.request
 import urllib.error
